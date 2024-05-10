@@ -96,7 +96,10 @@ export const Store = create<Store>((set) => ({
 
     handleQuestions: async (code, id) => {
         try {
-            await axios.post(`/api/v1/${id}/${Store.getState().id}`, code);
+            await axios.post(
+                `/api/v1/questionsubmit/${id}/${Store.getState().id}`,
+                code
+            );
 
             // setMessage(response.data.message);
         } catch (error) {

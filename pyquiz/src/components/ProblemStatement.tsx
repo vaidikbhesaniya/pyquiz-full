@@ -26,7 +26,7 @@ export default function ProblemStatement({
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (Cookies.get("id")) {
+            if (store.user?.id) {
                 const newTimer = store.timer - 1;
                 localStorage.setItem(`timer`, newTimer.toString());
                 store.settimer(newTimer);

@@ -49,7 +49,7 @@ export default function CodeEditor({
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (Cookies.get("id")) {
+            if (store.user?.id) {
                 const newTimer = parseInt(localStorage.getItem("timer")!);
 
                 // Check if timer has reached 0
