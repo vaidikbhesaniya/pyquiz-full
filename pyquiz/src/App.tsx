@@ -20,8 +20,12 @@ export default function App(): React.ReactNode {
         window.addEventListener("contextmenu", function (e) {
             e.preventDefault();
         });
+    }, []);
+
+    useEffect(() => {
         console.log(Cookies.get("id"));
     }, []);
+
     const [registerData, setRegisterData] = useState({
         userName: "",
         email: "",
