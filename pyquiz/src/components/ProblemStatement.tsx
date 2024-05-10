@@ -2,7 +2,7 @@ import { ReactNode, useRef } from "react";
 import { Question } from "../data/index";
 import { Store } from "../store/store";
 import { useEffect } from "react";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 
 interface ProblemStatementProps {
     visibleQuestion: Question;
