@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 interface datainterdace {
     userName: string;
@@ -10,6 +11,9 @@ interface codein {
     code: string;
 }
 interface Store {
+    id: number | undefined;
+    setid: (state: number) => void;
+
     isSubmit: boolean;
     setIsSubmit: (state: boolean) => void;
 
@@ -29,10 +33,15 @@ interface Store {
     settimer: (state: number) => void;
 
     handleStart: (data: datainterdace) => Promise<void>;
-
+    handlesubmit: () => Promise<void>;
     handleQuestions: (data: codein, id: number) => Promise<void>;
+
+    getdata: () => Promise<void>;
 }
 export const Store = create<Store>((set) => ({
+    id: undefined,
+    setid: (state) => set({ id: state }),
+
     isSubmit: false,
     setIsSubmit: (state) => set({ isSubmit: state }),
 
@@ -48,11 +57,9 @@ export const Store = create<Store>((set) => ({
     isAuth: false,
     setisAuth: (state) => set({ isAuth: state }),
 
-    // localStorage.getItem("timer")
-    // ? parseInt(localStorage.getItem("timer")!, 10)
-    // :
-
-    timer: 30,
+    timer: localStorage.getItem("timer")
+        ? parseInt(localStorage.getItem("timer")!, 10)
+        : 60 * 30,
     settimer: (state) => set({ timer: state }),
 
     handleStart: async (data) => {
@@ -61,7 +68,11 @@ export const Store = create<Store>((set) => ({
         await axios
             .post("/api/v1/user", data)
             .then((e) => {
-                console.log(e.data);
+                if (e.data?.message === true) {
+                    Store.getState().setIsSubmit(true);
+                }
+                Cookies.set("id", e.data?.id);
+                Store.getState().setid(parseInt(e.data?.id));
             })
             .catch((err) => {
                 console.log(err);
@@ -77,5 +88,31 @@ export const Store = create<Store>((set) => ({
             // setMessage("Error creating user");
             console.error(error);
         }
+    },
+
+    handlesubmit: async () => {
+        if (Store.getState().id !== undefined) {
+            await axios
+                .post(`/api/v1/submit/${Store.getState().id}`)
+                .then((response) => {
+                    console.log(response.data.message);
+                });
+        }
+
+        // setMessage(response.data.message);
+    },
+
+    getdata: async () => {
+        if (Store.getState().id !== undefined) {
+            await axios
+                .get(`/api/v1/user/${Store.getState().id}`)
+                .then((response) => {
+                    if (response.data?.issubmitted === true) {
+                        Store.getState().setIsSubmit(true);
+                    }
+                });
+        }
+
+        // setMessage(response.data.message);
     },
 }));

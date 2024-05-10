@@ -2,7 +2,7 @@ import { ReactNode, useRef } from "react";
 import { Question } from "../data/index";
 import { Store } from "../store/store";
 import { useEffect } from "react";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 
 interface ProblemStatementProps {
     visibleQuestion: Question;
@@ -26,7 +26,7 @@ export default function ProblemStatement({
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (store.isAuth) {
+            if (Cookies.get("id")) {
                 const newTimer = store.timer - 1;
                 localStorage.setItem(`timer`, newTimer.toString());
                 store.settimer(newTimer);
@@ -55,7 +55,7 @@ export default function ProblemStatement({
     };
     return (
         <div
-            className="bg-black lg:h-[100%] p-[1.5rem] w-[100%] h-[50%] overflow-auto poppins-medium scroll-smooth scrollbar-hide flex flex-col gap-[1rem]"
+            className="bg-black lg:h-[100%] p-[1.5rem] w-[100%] h-[50%] overflow-auto poppins-medium scroll-smooth scrollbar-hide flex flex-col gap-[1rem] lg:text-[17px] text-[14px]"
             id="slider"
             ref={slideRef}
         >

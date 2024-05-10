@@ -43,12 +43,13 @@ export default function CodeEditor({
     function handletestcomplition() {
         if (store.isLast) {
             Cookies.set("TestComplited", "true");
+            store.handlesubmit();
         }
     }
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (store.isAuth) {
+            if (Cookies.get("id")) {
                 const newTimer = parseInt(localStorage.getItem("timer")!);
 
                 // Check if timer has reached 0

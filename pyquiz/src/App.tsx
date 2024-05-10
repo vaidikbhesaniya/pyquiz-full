@@ -8,6 +8,7 @@ import { Store } from "./store/store";
 import Input from "./components/Input";
 import Cookies from "js-cookie";
 import React from "react";
+// import { CookieIcon } from "lucide-react";
 // import axios from "axios";
 
 export default function App(): React.ReactNode {
@@ -44,7 +45,7 @@ export default function App(): React.ReactNode {
             const nextQuestionIndex = currentQuestionIndex + 1;
             setVisibleQuestion(questions[nextQuestionIndex]);
             setCurrentQuestionIndex(nextQuestionIndex);
-            store.settimer(30);
+            store.settimer(60 * 30);
 
             // Store updated currentQuestionIndex in localStorage
             localStorage.setItem(
@@ -72,10 +73,20 @@ export default function App(): React.ReactNode {
         }
     };
 
+    useEffect(() => {
+        async function getdata() {
+            if (store.id !== undefined) {
+                await store.getdata();
+                store.setid(parseInt(Cookies.get("id")!));
+            }
+        }
+        getdata();
+    }, [store]);
+
     return (
         <div className="bg-[#0F0F0F] h-[100dvh] w-[100dvw] text-[#F2F2F2] overflow-hidden">
             <Navbar />
-            <div className="h-[90vh]  flex flex-col w-[100vw]  lg:flex-row">
+            <div className="h-[90dvh]  flex flex-col w-[100vw]  lg:flex-row">
                 <ProblemStatement visibleQuestion={visibleQuestion} />
                 <CodeEditor
                     visibleQuestionId={visibleQuestion.id}
@@ -83,7 +94,7 @@ export default function App(): React.ReactNode {
                 />
             </div>
 
-            {!store.isAuth ? (
+            {!Cookies.get("id") ? (
                 <div className="w-[100vw] h-[90vh] fixed bg-black z-[100] top-[10%] ">
                     <div className="w-full h-[80%] p-5 flex flex-col gap-4 ">
                         <form onSubmit={handleclick}>
@@ -141,7 +152,7 @@ export default function App(): React.ReactNode {
                         </form>
                     </div>
                 </div>
-            ) : Cookies.get("TestComplited") ? (
+            ) : store.isSubmit ? (
                 <div className="w-[100vw] h-[90vh] fixed bg-black z-[100] top-[10%] flex justify-center items-center  ">
                     <div className="bg-green-500 m-2 p-5 text-black shadow-2xl rounded-2xl poppins-medium">
                         Test Successfully Submitted
