@@ -1,8 +1,20 @@
 import { create } from "zustand";
 import axios from "axios";
+
+interface datainterdace {
+    userName: string;
+    email: string;
+}
+
+interface codein {
+    code: string;
+}
 interface Store {
     isSubmit: boolean;
     setIsSubmit: (state: boolean) => void;
+
+    isclick: boolean;
+    setisclick: (state: boolean) => void;
 
     isslide: boolean;
     setisslide: (state: boolean) => void;
@@ -16,9 +28,9 @@ interface Store {
     timer: number;
     settimer: (state: number) => void;
 
-    handleStart: (data: any) => Promise<void>;
+    handleStart: (data: datainterdace) => Promise<void>;
 
-    handleQuestions: (data: any, id: number) => Promise<void>;
+    handleQuestions: (data: codein, id: number) => Promise<void>;
 }
 export const Store = create<Store>((set) => ({
     isSubmit: false,
@@ -30,20 +42,30 @@ export const Store = create<Store>((set) => ({
     isLast: false,
     setisLast: (state) => set({ isLast: state }),
 
+    isclick: false,
+    setisclick: (state) => set({ isclick: state }),
+
     isAuth: false,
     setisAuth: (state) => set({ isAuth: state }),
 
-    timer: localStorage.getItem("timer")
-        ? parseInt(localStorage.getItem("timer")!, 10)
-        : 10 * 60,
+    // localStorage.getItem("timer")
+    // ? parseInt(localStorage.getItem("timer")!, 10)
+    // :
+
+    timer: 30,
     settimer: (state) => set({ timer: state }),
 
     handleStart: async (data) => {
         console.log(data);
 
-        await axios.post("/api/v1/user", data).then((res) => {
-            console.log(res.data);
-        });
+        await axios
+            .post("/api/v1/user", data)
+            .then((e) => {
+                console.log(e.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     },
 
     handleQuestions: async (code, id) => {

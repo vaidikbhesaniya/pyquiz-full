@@ -14,12 +14,9 @@ export default function ProblemStatement({
     const slideRef = useRef<HTMLDivElement>(null);
     const store = Store();
 
-    function sideToTop() {
-        if (slideRef.current && store.isslide) {
-            slideRef.current.scrollTop = 0;
-        }
+    if (slideRef.current && store.isslide) {
+        slideRef.current.scrollTop = 0;
     }
-    sideToTop();
 
     // const [timer, setTimer] = useState<number>(() => {
     //     const storedTimer = localStorage.getItem(`timer`);
@@ -42,7 +39,9 @@ export default function ProblemStatement({
 
         if (store.timer <= 0) {
             console.log("Time's up for question", visibleQuestion.id);
+
             clearInterval(interval);
+            
         }
 
         return () => clearInterval(interval);

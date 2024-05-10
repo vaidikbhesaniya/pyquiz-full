@@ -12,7 +12,7 @@ import React from "react";
 
 export default function App(): React.ReactNode {
     const [visibleQuestion, setVisibleQuestion] = useState<Question>(
-        questions[0]
+        questions[parseInt(localStorage.getItem("currentQuestionIndex") || "0")]
     );
 
     const store = Store();
@@ -27,19 +27,29 @@ export default function App(): React.ReactNode {
         Invitationcode: "",
     });
 
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    // const currentQuestion = questions[currentQuestionIndex];
+    // Get currentQuestionIndex from localStorage or default to 0
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(
+        parseInt(localStorage.getItem("currentQuestionIndex") || "0")
+    );
 
     const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
     const handleNextQuestion = () => {
         if (!isLastQuestion) {
-            setVisibleQuestion(questions[currentQuestionIndex + 1]);
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-            store.settimer(10 * 60);
+            const nextQuestionIndex = currentQuestionIndex + 1;
+            setVisibleQuestion(questions[nextQuestionIndex]);
+            setCurrentQuestionIndex(nextQuestionIndex);
+            store.settimer(30);
+
+            // Store updated currentQuestionIndex in localStorage
+            localStorage.setItem(
+                "currentQuestionIndex",
+                nextQuestionIndex.toString()
+            );
+
+            console.log(nextQuestionIndex);
         } else {
             store.setisLast(true);
-
             // Logic for submitting the test
             console.log("Test submitted!");
         }
@@ -48,13 +58,12 @@ export default function App(): React.ReactNode {
     const handleclick = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        store.handleStart({
-            email: registerData.email,
-            userName: registerData.userName,
-        });
-
         if (registerData.Invitationcode === "123") {
             store.setisAuth(true);
+            store.handleStart({
+                email: registerData.email,
+                userName: registerData.userName,
+            });
         }
     };
 
