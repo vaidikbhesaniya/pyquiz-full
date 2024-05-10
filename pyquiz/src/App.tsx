@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import CodeEditor from "./components/CodeEditor";
 import Navbar from "./components/Navbar";
 import ProblemStatement from "./components/ProblemStatement";
@@ -7,6 +7,7 @@ import { Question, questions } from "./data";
 import { Store } from "./store/store";
 import Input from "./components/Input";
 import Cookies from "js-cookie";
+import React from "react";
 // import axios from "axios";
 
 export default function App(): React.ReactNode {
@@ -49,7 +50,7 @@ export default function App(): React.ReactNode {
         }
     };
 
-    const handleclick = (e: any) => {
+    const handleclick = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         store.handleStart({
@@ -82,7 +83,9 @@ export default function App(): React.ReactNode {
                                 type="text"
                                 label="Username"
                                 value={registerData.userName}
-                                onChange={(e) =>
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) =>
                                     setRegisterData({
                                         ...registerData,
                                         userName: e.target.value,
@@ -94,7 +97,9 @@ export default function App(): React.ReactNode {
                                 type="email"
                                 label="Email"
                                 value={registerData.email}
-                                onChange={(e) =>
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) =>
                                     setRegisterData({
                                         ...registerData,
                                         email: e.target.value,
@@ -106,7 +111,9 @@ export default function App(): React.ReactNode {
                                 type="password"
                                 label="Invitation code"
                                 value={registerData.Invitationcode}
-                                onChange={(e) =>
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) =>
                                     setRegisterData({
                                         ...registerData,
                                         Invitationcode: e.target.value,
