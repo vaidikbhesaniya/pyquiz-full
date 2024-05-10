@@ -7,7 +7,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-    origin: ["https://pyquiz-full.vercel.app", "http://localhost:5173"],
+    origin: ["https://pyquiz-full.vercel.app/"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
@@ -23,6 +23,7 @@ function getQuestionField(questionId) {
 }
 app.post("/api/v1/user", async (req, res) => {
     const { email, userName } = req.body;
+    console.log(req.body);
     try {
         const user = await prisma.data.findUnique({
             where: {

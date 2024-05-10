@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CodeEditor from "./components/CodeEditor";
 import Navbar from "./components/Navbar";
 import ProblemStatement from "./components/ProblemStatement";
@@ -20,9 +20,6 @@ export default function App(): React.ReactNode {
         window.addEventListener("contextmenu", function (e) {
             e.preventDefault();
         });
-        console.log("====================================");
-        console.log(Cookies.get("id"));
-        console.log("====================================");
     }, []);
     const [registerData, setRegisterData] = useState({
         userName: "",
@@ -34,9 +31,7 @@ export default function App(): React.ReactNode {
     // const currentQuestion = questions[currentQuestionIndex];
 
     const isLastQuestion = currentQuestionIndex === questions.length - 1;
-    console.log("====================================");
-    console.log(currentQuestionIndex);
-    console.log("====================================");
+
     const handleNextQuestion = () => {
         if (!isLastQuestion) {
             setVisibleQuestion(questions[currentQuestionIndex + 1]);

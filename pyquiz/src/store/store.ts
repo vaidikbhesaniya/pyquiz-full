@@ -39,24 +39,16 @@ export const Store = create<Store>((set) => ({
     settimer: (state) => set({ timer: state }),
 
     handleStart: async (data) => {
-        try {
-            const response = await axios.post("/api/v1/user", data);
+        console.log(data);
 
-            console.log(response.data);
-
-            // setMessage(response.data.message);
-        } catch (error) {
-            // setMessage("Error creating user");
-            console.error(error);
-        }
+        await axios.post("/api/v1/user", data).then((res) => {
+            console.log(res.data);
+        });
     },
 
     handleQuestions: async (code, id) => {
         try {
-            const response = await axios.post(`/api/v1/${id}`, code);
-            console.log("====================================");
-            console.log(response.data);
-            console.log("====================================");
+            await axios.post(`/api/v1/${id}`, code);
 
             // setMessage(response.data.message);
         } catch (error) {
