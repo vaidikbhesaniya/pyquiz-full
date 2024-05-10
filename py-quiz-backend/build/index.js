@@ -1,18 +1,13 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const db_1 = __importDefault(require("./db"));
-const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const cors_1 = __importDefault(require("cors"));
-const app = (0, express_1.default)();
-app.use(express_1.default.json());
-app.use((0, cookie_parser_1.default)());
-app.use(express_1.default.urlencoded({ extended: true }));
-app.use((0, cors_1.default)({
-    origin: ["http://localhost:5174"],
+import express from "express";
+import prisma from "./db/index.js";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(cors({
+    origin: ["https://pyquiz-full.vercel.app", "http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
@@ -29,7 +24,7 @@ function getQuestionField(questionId) {
 app.post("/api/v1/user", async (req, res) => {
     const { email, userName } = req.body;
     try {
-        const user = await db_1.default.data.findUnique({
+        const user = await prisma.data.findUnique({
             where: {
                 email: email,
             },
@@ -37,7 +32,7 @@ app.post("/api/v1/user", async (req, res) => {
         if (user) {
             return res.status(404).json({ message: "User Already Exists" });
         }
-        const newuser = await db_1.default.data.create({
+        const newuser = await prisma.data.create({
             data: {
                 email,
                 userName,
@@ -57,7 +52,7 @@ app.post("/api/v1/:questionId", async (req, res) => {
     const { id } = req.cookies;
     console.log(code);
     try {
-        await db_1.default.data.update({
+        await prisma.data.update({
             where: {
                 id: parseInt(id),
             },
@@ -72,7 +67,10 @@ app.post("/api/v1/:questionId", async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
-const PORT = process.env.PORT || 8080;
+app.use("/api/v1/health", (req, res) => {
+    res.status(200).json({ message: "Server is running" });
+});
+const PORT = Number(process.env.PORT) || 8080;
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
