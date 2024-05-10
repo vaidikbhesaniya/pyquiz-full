@@ -8,9 +8,10 @@ datasource db {
 }
 
 model data {
-  id        Int     @id @default(autoincrement())
-  userName  String
-  email     String  @unique
-  question1 String?
-  question2 String?
+  id          Int     @id @default(autoincrement())
+  userName    String
+  email       String  @unique
+  question1   String?
+  question2   String?
+  issubmitted Boolean
 }
