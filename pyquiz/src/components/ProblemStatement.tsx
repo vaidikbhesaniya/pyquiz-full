@@ -26,7 +26,7 @@ export default function ProblemStatement({
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (Cookies.get("id")) {
+            if (store.isAuth) {
                 const newTimer = store.timer - 1;
                 localStorage.setItem(`timer`, newTimer.toString());
                 store.settimer(newTimer);
@@ -41,7 +41,6 @@ export default function ProblemStatement({
             console.log("Time's up for question", visibleQuestion.id);
 
             clearInterval(interval);
-            
         }
 
         return () => clearInterval(interval);

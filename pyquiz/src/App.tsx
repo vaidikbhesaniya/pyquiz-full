@@ -83,7 +83,7 @@ export default function App(): React.ReactNode {
                 />
             </div>
 
-            {!Cookies.get("id") ? (
+            {!store.isAuth ? (
                 <div className="w-[100vw] h-[90vh] fixed bg-black z-[100] top-[10%] ">
                     <div className="w-full h-[80%] p-5 flex flex-col gap-4 ">
                         <form onSubmit={handleclick}>
