@@ -41,9 +41,8 @@ export const Store = create<Store>((set) => ({
     handleStart: async (data) => {
         try {
             const response = await axios.post("/api/v1/user", data);
-            console.log("====================================");
+
             console.log(response.data);
-            console.log("====================================");
 
             // setMessage(response.data.message);
         } catch (error) {
