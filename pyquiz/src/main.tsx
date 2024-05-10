@@ -5,7 +5,7 @@ import "./index.css";
 import axios from "axios";
 // https://pyquizev2-ebon.vercel.app
 //
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "https://pyquizev2-ebon.vercel.app";
 axios.defaults.withCredentials = true;
 
 
