@@ -40,7 +40,10 @@ export const Store = create<Store>((set) => ({
 
     handleStart: async (data) => {
         try {
-            const response = await axios.post("/api/v1/user", data);
+            const response = await axios.post(
+                "https://pyquiz-full-backend.vercel.app/api/v1/user",
+                data
+            );
             console.log("====================================");
             console.log(response.data);
             console.log("====================================");
@@ -54,7 +57,10 @@ export const Store = create<Store>((set) => ({
 
     handleQuestions: async (code, id) => {
         try {
-            const response = await axios.post(`/api/v1/${id}`, code);
+            const response = await axios.post(
+                `https://pyquiz-full-backend.vercel.app/api/v1/${id}`,
+                code
+            );
             console.log("====================================");
             console.log(response.data);
             console.log("====================================");
