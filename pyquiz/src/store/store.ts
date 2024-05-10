@@ -107,7 +107,7 @@ export const Store = create<Store>((set) => ({
             await axios
                 .get(`/api/v1/user/${Store.getState().id}`)
                 .then((response) => {
-                    if (response.data?.issubmitted === true) {
+                    if (response.data?.issubmitted == true) {
                         Store.getState().setIsSubmit(true);
                     }
                 });

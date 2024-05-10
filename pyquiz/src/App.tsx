@@ -75,7 +75,7 @@ export default function App(): React.ReactNode {
 
     useEffect(() => {
         async function getdata() {
-            if (store.id !== undefined) {
+            if (store.id !== undefined && store.id !== null) {
                 await store.getdata();
                 store.setid(parseInt(Cookies.get("id")!));
             }
