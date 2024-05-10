@@ -10,7 +10,19 @@ interface datainterdace {
 interface codein {
     code: string;
 }
+interface userinterface {
+    id: number;
+    userName: string;
+    email: string;
+    question1: string | null;
+    question2: string | null;
+    issubmitted: boolean;
+}
+
 interface Store {
+    user: userinterface | undefined;
+    setuser: (state: userinterface | undefined) => void;
+
     id: number | undefined;
     setid: (state: number) => void;
 
@@ -39,6 +51,9 @@ interface Store {
     getdata: () => Promise<void>;
 }
 export const Store = create<Store>((set) => ({
+    user: undefined,
+    setuser: (state) => set({ user: state }),
+
     id: undefined,
     setid: (state) => set({ id: state }),
 
@@ -81,7 +96,7 @@ export const Store = create<Store>((set) => ({
 
     handleQuestions: async (code, id) => {
         try {
-            await axios.post(`/api/v1/${id}`, code);
+            await axios.post(`/api/v1/${id}/${Store.getState().id}`, code);
 
             // setMessage(response.data.message);
         } catch (error) {
@@ -104,13 +119,17 @@ export const Store = create<Store>((set) => ({
 
     getdata: async () => {
         if (Store.getState().id !== undefined) {
-            await axios
-                .get(`/api/v1/user/${Store.getState().id}`)
-                .then((response) => {
-                    if (response.data?.issubmitted == true) {
-                        Store.getState().setIsSubmit(true);
-                    }
-                });
+            if (Store.getState().user === undefined) {
+                await axios
+                    .get(`/api/v1/user/${Store.getState().id}`)
+                    .then((response) => {
+                        Store.getState().setuser(response.data);
+                    });
+
+                console.log("====================================");
+                console.log(Store.getState().user);
+                console.log("====================================");
+            }
         }
 
         // setMessage(response.data.message);
